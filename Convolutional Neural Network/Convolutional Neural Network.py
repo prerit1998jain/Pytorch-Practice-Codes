@@ -14,11 +14,11 @@ num_epochs = 5
 learning_rate = 0.001
 
 # Data Downloading and Building DataLoader
-train_dataset = torchvision.datasets.MNIST(root = '/data', train = True, transform = transforms.ToTensor(), download = True)
-test_dataset = torchvision.datasets.MNIST(root = '/data', train = False, transform = transforms.ToTensor())
+train_dataset = torchvision.datasets.MNIST(root = './data', train = True, transform = transforms.ToTensor(), download = True)
+test_dataset = torchvision.datasets.MNIST(root = './data', train = False, transform = transforms.ToTensor())
 
 trainLoader = torch.utils.data.DataLoader(dataset = train_dataset, batch_size = batch_size, shuffle = True)
-testLoader = torch.utils.data.DataLoader(dataset = test_dataset, batch_size = batch_size, shuffle )
+testLoader = torch.utils.data.DataLoader(dataset = test_dataset, batch_size = batch_size, shuffle = False )
 
 
 # Defining the model
@@ -34,7 +34,7 @@ class CNN(nn.Module):
             nn.Conv2d(16,32, kernel_size = 5, stride = 1, padding = 1),
             nn.BatchNorm2d(32),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size = 2, stride = 2)
+            nn.MaxPool2d(kernel_size = 2, stride = 2))
         self.fc = nn.Linear(7*7*32, num_classes)
 
     def forward(self, x):
@@ -53,7 +53,7 @@ optimizer =torch.optim.Adam(model.parameters(), lr = learning_rate)
 
 # Training the model
 total_step = len(trainLoader)
-for epoch in num_epochs:
+for epoch in range(num_epochs):
     for i, (images, labels) in enumerate(trainLoader):
         images = images.to(device)
         labels = labels.to(device)
